@@ -1,1 +1,9 @@
-# 🎮 Call of Trut; Air War 🪖
+# 🎮 Call of Trut; Air War | ندای حقیقت؛ جنگ هوایی 🪖
+
+---
+
+## 🤝🏻 اعضای تیم توسعه‌دهندگان:
+- [**حسین پ.**](https://GitHub.com/HP2000C) | مدیر تیم، بخش تبلیغات و توسعه‌دهنده قسمت HTML
+- [**دانیال کمالی‌پور**](https://GitHub.com/DanialKamalipour) | نویسنده داستان
+- [**توربو**](https://GitHub.com/Turbo-Dev-C) | توسعه‌دهنده قسمت ++C و اتصال به فایل HTML
+- **محمدامین** | توسعه‌دهنده قسمت HTML
