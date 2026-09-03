@@ -1,6 +1,6 @@
 # 🎮 Call of Truth; Air War 🪖
 # 🎮 ندای حقیقت؛ جنگ هوایی 🪖
-[**English Details**](README-En.md)
+
 ---
 
 ## 🧑🏻‍💻 داستان کلی بازی
@@ -67,3 +67,7 @@
 جهت ارتباط با پشتیبانی، برای پرسیدن سؤال و یا هر کار دیگر، و ارتباط با [**مدیریت تیم، حسین پ.**](https://GitHub.com/HP2000C) به Gmail زیر Email بزنید:
 
 - **Gmail** Address: **Hossein.P.2013.1391@gmail.com**
+
+---
+
+### [📄 English README](README-EN.md)
