@@ -1,6 +1,6 @@
 # 🎮 Call of Truth; Air War 🪖
 # 🎮 ندای حقیقت؛ جنگ هوایی 🪖
-
+[**English Details**](README-En.md)
 ---
 
 ## 🧑🏻‍💻 داستان کلی بازی
