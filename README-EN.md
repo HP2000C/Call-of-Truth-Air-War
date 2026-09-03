@@ -1,4 +1,4 @@
-# 🎮 Call of Truth; Air War 🪖 A
+# 🎮 Call of Truth; Air War 🪖
 
 ---
 
