@@ -1,4 +1,5 @@
-# 🎮 Call of Trut; Air War | ندای حقیقت؛ جنگ هوایی 🪖
+# 🎮 Call of Trut; Air War 🪖
+# 🎮 ندای حقیقت؛ جنگ هوایی 🪖
 
 ---
 
