@@ -1,22 +1,27 @@
-# 🎮 Call of Truth ; Air War
+# 🎮 Call of Truth; Air War 🪖
 
 ---
+
 ## 🧑🏻‍💻 Game Story Summary
-The game’s overarching narrative depicts a hypothetical "Third Imposed War" between the **Islamic Republic of Iran** 🇮🇷 ✊🏻 and the United States. The story unfolds from the perspective of a high-ranking political-military decision-maker; the choices this official makes alter the course of the conflict, though—mirroring the reality of the battlefield—Iran ultimately emerges victorious.
+The game’s overarching narrative depicts a hypothetical "Third Imposed War" between the **🇮🇷 IR IRAN ✊🏻** and the United States. The story unfolds from the perspective of a high-ranking political-military decision-maker; the choices this official makes alter the course of the conflict, though—mirroring the reality of the battlefield—Iran ultimately emerges victorious.
 
 While the official is a fictional character—bearing a name chosen by the player—the war’s events are designed to be as realistic as possible, featuring actual figures and scenarios; only the protagonist himself is a fictional construct.
 
 The game consists of short video sequences, a narrative storyline, player-driven decisions, and brief incidental events, all managed through a simple menu and settings interface.
 
-## 🤝 Developer Team
-- [**Hossein.P**](https://GitHub.com/HP2000C) | CEO , Marketing Manager , Developer HTML
+---
+
+## 🤝🏻 Developer Team
+- [**Hossein P.**](https://GitHub.com/HP2000C) | CEO, Marketing Manager, Developer HTML
 - [**Danial Kamalipour**](https://GitHub.com/DanialKamalipour) | Writer Of Game Story
 - [**Turbo**](https://GitHub.com/Turbo-Dev-C) | Developer Of C++ Episode
 - **Mohamad Amin** | Developer Of HTML Episode
 
+---
+
 ## 👬🏻 Roles and Responsibilities
 
-### ▪︎ [**Hossein.P**](https://GitHub.com/HP2000C):
+### ▪︎ [**Hossein P.**](https://GitHub.com/HP2000C):
 - Team management, project integrity oversight, and ensuring the accurate execution of tasks.
 - Managing the advertising department, coordinating the game, and overseeing its release.
 - Creating logos, logotypes, posters, and other visual assets for the game's advertising.
@@ -44,8 +49,14 @@ So, the symbols are `*`, `**`, `1`, and `1.1` (note that the numbers are variabl
 - Developing the core and foundation of the game in C++, with gameplay based on short videos, text, user choices, and a simple menu Without War.
 
 ### ▪︎ **Mohamad Amin**:
-- Developeing HTML Episode 
+- Developeing HTML Episode
+
 ---
+
 ## 📧 Support
-For Communication With Us [**Hossein.P Team Managing**](https://GitHub.com/HP2000C) Or Send A Message For This Email
+For Communication With Us [**Hossein P. Team Managing**](https://GitHub.com/HP2000C) Or Send A Message For This Email
 - **Gmail** Address: **Hossein.P.2013.1391@gmail.com**
+
+---
+
+### [🇮🇷 Persian README ✊🏻](README.md)
