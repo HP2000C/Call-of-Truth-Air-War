@@ -15,7 +15,7 @@ The game consists of short video sequences, a narrative storyline, player-driven
 - [**Hossein P.**](https://GitHub.com/HP2000C) | CEO, Marketing Manager, Developer HTML
 - [**Danial Kamalipour**](https://GitHub.com/DanialKamalipour) | Writer Of Game Story
 - [**Turbo**](https://GitHub.com/Turbo-Dev-C) | Developer Of C++ Episode
-- **Mohamad Amin** | Developer Of HTML Episode
+- [**Mohamad Amin**](https://GitHub.com/immohamadamin2026-sudo) | Developer Of HTML Episode
 
 ---
 
@@ -48,7 +48,7 @@ So, the symbols are `*`, `**`, `1`, and `1.1` (note that the numbers are variabl
 - Conecting C++ File And HTML File
 - Developing the core and foundation of the game in C++, with gameplay based on short videos, text, user choices, and a simple menu Without War.
 
-### ▪︎ **Mohamad Amin**:
+### ▪︎ [**Mohamad Amin**](https://GitHub.com/immohamadamin2026-sudo):
 - Developeing HTML Episode
 
 ---
