@@ -14,12 +14,50 @@
 ---
 
 ## 🤝🏻 اعضای تیم توسعه‌دهندگان
-- [**حسین پ.**](https://GitHub.com/HP2000C) | مدیر تیم، بخش تبلیغات و توسعه‌دهنده قسمت HTML
-- [**دانیال کمالی‌پور**](https://GitHub.com/DanialKamalipour) | نویسنده داستان
-- [**توربو**](https://GitHub.com/Turbo-Dev-C) | توسعه‌دهنده قسمت ++C و اتصال به فایل HTML
-- [**محمدامین**](https://GitHub.com/immohamadamin2026-sudo) | توسعه‌دهنده قسمت HTML
-- [**رهام**](https://GitHub.com/RCodeRoham2014) | بـه‌زودی... 
+
+<div align="right">
+
+<table dir="rtl">
+  <thead>
+    <tr>
+      <th>ردیف</th>
+      <th>نام/نام مستعار</th>
+      <th>سمت/وظیفه</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><a href="https://GitHub.com/HP2000C"><strong>حسین پ.</strong></a></td>
+      <td>مدیر تیم، بخش تبلیغات و توسعه‌دهنده قسمت HTML</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><a href="https://GitHub.com/DanialKamalipour"><strong>دانیال کمالی‌پور</strong></a></td>
+      <td>داستان‌نویس</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><a href="https://GitHub.com/Turbo-Dev-C"><strong>توربو</strong></a></td>
+      <td>توسعه‌دهنده قسمت ++C و اتصال به فایل</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><a href="https://GitHub.com/immohamadamin2026-sudo"><strong>محمدامین</strong></a></td>
+      <td>توسعه‌دهنده قسمت</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><a href="https://GitHub.com/RCodeRoham2014"><strong>رهام</strong></a></td>
+      <td>بـه‌زودی...</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
 ---
+
 ## 👬🏻 وظیفه دقیق هر شخص
 
 ### ▪︎ [**حسین پ.**](https://GitHub.com/HP2000C):
