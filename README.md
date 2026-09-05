@@ -18,7 +18,7 @@
 - [**دانیال کمالی‌پور**](https://GitHub.com/DanialKamalipour) | نویسنده داستان
 - [**توربو**](https://GitHub.com/Turbo-Dev-C) | توسعه‌دهنده قسمت ++C و اتصال به فایل HTML
 - [**محمدامین**](https://GitHub.com/immohamadamin2026-sudo) | توسعه‌دهنده قسمت HTML
-- [**رهام**](https://GitHub.com/RCodeRoham) | بـه‌زودی... 
+- [**رهام**](https://GitHub.com/RCodeRoham2014) | بـه‌زودی... 
 ---
 ## 👬🏻 وظیفه دقیق هر شخص
 
@@ -61,7 +61,7 @@
 ### ▪︎ [**محمدامین**](https://GitHub.com/immohamadamin2026-sudo):
 - توسعه قسمت کُد HTML
 
-### ▪︎ [**رهام**](https://GitHub.com/RCodeRoham):
+### ▪︎ [**رهام**](https://GitHub.com/RCodeRoham2014):
 - بـه‌زودی...
 
 ---
