@@ -49,7 +49,7 @@
     <tr>
       <td>5</td>
       <td><a href="https://GitHub.com/RCodeRoham2014"><strong>رهام</strong></a></td>
-      <td>بـه‌زودی...</td>
+      <td>تست‌کننده کیفیت بازی | QA Tester</td>
     </tr>
   </tbody>
 </table>
@@ -67,7 +67,7 @@
 - مدیریت [مخزن پروژه در GitHub](https://GitHub.com/HP2000C/Call-of-Truth-Air-War)
 - توسعه قسمت کُد HTML
 - رفع باگ کردن تمامی کُدهای بازی، در صورت رفع باگ نشدن کُد توسط مسئول آن بخش
-- برخی کارهای جزئی دیگر
+- برخی کارهای دیگر...
 
 ### ▪︎ [**دانیال کمالی‌پور**](https://GitHub.com/DanialKamalipour):
 - نوشتن داستان بازی به‌صورت زیر:
@@ -100,7 +100,7 @@
 - توسعه قسمت کُد HTML
 
 ### ▪︎ [**رهام**](https://GitHub.com/RCodeRoham2014):
-- بـه‌زودی...
+- تست دقیق و کارشناسانه بازی
 
 ---
  
