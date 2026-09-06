@@ -44,7 +44,7 @@
     <tr>
       <td>4</td>
       <td><a href="https://GitHub.com/immohamadamin2026-sudo"><strong>محمدامین</strong></a></td>
-      <td>توسعه‌دهنده قسمت</td>
+      <td>HTML توسعه‌دهنده قسمت</td>
     </tr>
     <tr>
       <td>5</td>
