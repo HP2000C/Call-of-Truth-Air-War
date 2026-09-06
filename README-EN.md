@@ -12,10 +12,45 @@ The game consists of short video sequences, a narrative storyline, player-driven
 ---
 
 ## 🤝🏻 Developer Team
-- [**Hossein P.**](https://GitHub.com/HP2000C) | CEO, Marketing Manager, Developer HTML
-- [**Danial Kamalipour**](https://GitHub.com/DanialKamalipour) | Writer Of Game Story
-- [**Turbo**](https://GitHub.com/Turbo-Dev-C) | Developer Of C++ Episode
-- [**Mohamad Amin**](https://GitHub.com/immohamadamin2026-sudo) | Developer Of HTML Episode
+<div align="right">
+    
+<table dir="rtl">
+  <thead>
+    <tr>
+      <th>Columns</th>
+      <th>Name / Alias</th>
+      <th>Work</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><a href="https://GitHub.com/HP2000C"><strong>Hossein . P</strong></a></td>
+      <td>CEO, Marketing Manager, Developer HTML</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><a href="https://GitHub.com/DanialKamalipour"><strong>Danial Kamalipour</strong></a></td>
+      <td>Story Writer</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><a href="https://GitHub.com/Turbo-Dev-C"><strong>Turbo</strong></a></td>
+      <td>Developer Of C++ Episode And Conector Of HTML Files</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><a href="https://GitHub.com/immohamadamin2026-sudo"><strong>Mohamad Amin</strong></a></td>
+      <td>Developer Of HTML Episode</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><a href="https://GitHub.com/RCodeRoham2014"><strong>Roham</strong></a></td>
+      <td>Quality Tester | QA Tester</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 ---
 
@@ -59,4 +94,4 @@ For Communication With Us [**Hossein P. Team Managing**](https://GitHub.com/HP20
 
 ---
 
-### [🇮🇷 Persian README ✊🏻](README.md)
+### [🇮🇷 فارسی README ✊🏻](README.md)
