@@ -1,1 +1,337 @@
-🎮 Call of Truth; Air War 🪖
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call of Truth; Air War</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-panel: #ffffff;
+            --bg-elevated: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-dim: #94a3b8;
+            --accent-green: #059669;
+            --accent-cyan: #0891b2;
+            --accent-red: #dc2626;
+            --accent-amber: #d97706;
+            --accent-blue: #2563eb;
+            --accent-purple: #7c3aed;
+            --accent-orange: #ea580c;
+            --accent-gold: #b45309;
+            --border-color: #e2e8f0;
+            --border-glow: rgba(5, 150, 105, 0.2);
+            --shadow-panel: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --font-main: 'Vazirmatn', 'Tahoma', 'Arial', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.9;
+            font-weight: 400;
+            transition: background-color 0.5s ease;
+        }
+        #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .game-container { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; padding: 16px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .hamburger-menu { position: fixed; top: 16px; right: 16px; z-index: 100; cursor: pointer; background: var(--bg-panel); border: 2px solid var(--border-color); border-radius: 10px; padding: 8px 10px; display: none; flex-direction: column; gap: 4px; transition: all 0.3s ease; }
+        .hamburger-menu:hover { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(8,145,178,0.2); }
+        .hamburger-menu .bar { width: 24px; height: 2px; background: var(--text-primary); border-radius: 2px; transition: all 0.3s ease; }
+        .hamburger-menu.active .bar:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .hamburger-menu.active .bar:nth-child(2) { opacity: 0; }
+        .hamburger-menu.active .bar:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+        .menu-overlay { position: fixed; top: 0; right: 0; width: 300px; height: 100vh; background: var(--bg-panel); box-shadow: -4px 0 30px rgba(0,0,0,0.15); z-index: 99; padding: 24px; display: none; flex-direction: column; gap: 12px; border-left: 1px solid var(--border-color); transition: transform 0.3s ease; transform: translateX(100%); }
+        .menu-overlay.open { transform: translateX(0); display: flex; }
+        .menu-overlay .menu-title { font-size: 1.2rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--border-color); }
+        .menu-overlay .menu-item { padding: 12px 16px; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; font-weight: 500; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; background: var(--bg-elevated); border: 1px solid var(--border-color); color: var(--text-primary); }
+        .menu-overlay .menu-item:hover { background: var(--bg-secondary); border-color: var(--accent-cyan); color: var(--accent-cyan); box-shadow: 0 0 15px rgba(8,145,178,0.1); }
+        #save-slots-screen { text-align: center; width: 100%; animation: fadeIn 0.6s ease-out; }
+        #save-slots-screen h1 { font-size: 2.5rem; font-weight: 900; color: var(--text-primary); margin-bottom: 10px; }
+        #save-slots-screen .subtitle { font-size: 1.2rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 30px; }
+        .save-slots-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 20px; }
+        .save-slot { background: var(--bg-panel); border: 2px solid var(--border-color); border-radius: 16px; padding: 20px 16px; cursor: pointer; transition: all 0.3s ease; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; box-shadow: var(--shadow-panel); }
+        .save-slot:hover { border-color: var(--accent-cyan); box-shadow: 0 0 25px rgba(8,145,178,0.2); transform: translateY(-3px); }
+        .save-slot.empty { border-style: dashed; opacity: 0.7; }
+        .save-slot .slot-number { font-size: 1.4rem; font-weight: 900; color: var(--accent-cyan); }
+        .save-slot .slot-info { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+        .save-slot .slot-player { font-size: 0.9rem; font-weight: 700; color: var(--accent-green); }
+        .save-slot .delete-btn { margin-top: 6px; padding: 4px 10px; font-size: 0.7rem; border: 1px solid var(--border-color); border-radius: 6px; background: transparent; color: var(--text-secondary); cursor: pointer; }
+        .save-slot .delete-btn:hover { border-color: var(--accent-red); color: var(--accent-red); }
+        #title-screen { text-align: center; animation: fadeIn 1s ease-out; width: 100%; }
+        #title-screen .military-badge { display: inline-block; padding: 8px 24px; border: 2px solid var(--accent-cyan); border-radius: 50px; color: var(--accent-cyan); font-size: 0.85rem; letter-spacing: 3px; margin-bottom: 30px; text-transform: uppercase; }
+        #title-screen h1 { font-size: 3.5rem; font-weight: 900; color: var(--text-primary); margin-bottom: 10px; letter-spacing: 1px; }
+        #title-screen .subtitle { font-size: 1.6rem; font-weight: 700; color: var(--accent-green); margin-bottom: 15px; }
+        #title-screen .tribute { font-size: 0.95rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 30px; line-height: 2; border-right: 3px solid var(--accent-green); padding-right: 20px; text-align: right; }
+        .btn { font-family: var(--font-main); padding: 14px 32px; border: 2px solid var(--border-color); border-radius: 12px; background: var(--bg-elevated); color: var(--text-primary); font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.3s ease; letter-spacing: 0.5px; text-align: center; min-width: 200px; display: inline-block; }
+        .btn:hover { border-color: var(--accent-green); box-shadow: 0 0 25px rgba(5,150,105,0.15); transform: translateY(-2px); color: var(--accent-green); }
+        .btn-primary { border-color: var(--accent-green); background: rgba(5,150,105,0.08); color: var(--accent-green); }
+        #name-input-section { text-align: center; width: 100%; max-width: 500px; }
+        #name-input-section h2 { font-size: 1.6rem; margin-bottom: 25px; color: var(--accent-cyan); }
+        .name-input-wrapper { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .name-input-wrapper input { font-family: var(--font-main); padding: 14px 20px; border: 2px solid var(--border-color); border-radius: 12px; background: var(--bg-panel); color: var(--text-primary); font-size: 1.1rem; width: 280px; text-align: center; transition: all 0.3s ease; outline: none; }
+        .name-input-wrapper input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 20px rgba(8,145,178,0.15); }
+        #game-screen { width: 100%; animation: fadeIn 0.6s ease-out; display: none; }
+        .game-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 14px; margin-bottom: 18px; box-shadow: var(--shadow-panel); flex-wrap: wrap; gap: 10px; }
+        .game-header .game-title-small { font-size: 0.9rem; font-weight: 700; color: var(--accent-green); letter-spacing: 1px; }
+        .game-header .player-info { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: var(--text-secondary); }
+        .player-name-badge { background: var(--bg-elevated); padding: 6px 16px; border-radius: 20px; border: 1px solid var(--border-color); color: var(--accent-cyan); font-weight: 700; }
+        .clue-counter { display: flex; align-items: center; gap: 6px; background: rgba(217,119,6,0.1); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(217,119,6,0.3); color: var(--accent-amber); font-weight: 700; font-size: 0.8rem; }
+        .dialogue-panel { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 18px; padding: 28px 24px; margin-bottom: 18px; box-shadow: var(--shadow-panel); min-height: 250px; position: relative; overflow: hidden; }
+        .dialogue-panel::before { content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, var(--accent-green), var(--accent-cyan), transparent); opacity: 0.4; }
+        .speaker-name { font-size: 1.15rem; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; letter-spacing: 0.5px; }
+        .speaker-name .speaker-icon { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--accent-cyan); box-shadow: 0 0 10px rgba(8,145,178,0.5); }
+        .dialogue-text { font-size: 1.05rem; color: var(--text-primary); line-height: 2.1; white-space: pre-wrap; word-wrap: break-word; letter-spacing: 0.2px; font-weight: 400; min-height: 50px; }
+        .system-message { color: var(--accent-amber); font-weight: 500; border-right: 3px solid var(--accent-amber); padding-right: 15px; margin: 10px 0; font-size: 0.95rem; }
+        .choices-container { display: flex; flex-direction: column; gap: 12px; margin-top: 5px; }
+        .choice-btn { font-family: var(--font-main); padding: 16px 22px; border: 2px solid var(--border-color); border-radius: 14px; background: var(--bg-panel); color: var(--text-primary); font-size: 0.98rem; font-weight: 500; cursor: pointer; transition: all 0.3s ease; text-align: right; letter-spacing: 0.3px; line-height: 1.8; }
+        .choice-btn:hover { border-color: var(--accent-cyan); background: rgba(8,145,178,0.05); box-shadow: 0 0 20px rgba(8,145,178,0.1); transform: translateX(-4px); color: var(--accent-cyan); }
+        .choice-number { display: inline-block; background: var(--accent-cyan); color: #fff; font-weight: 900; width: 28px; height: 28px; border-radius: 50%; text-align: center; line-height: 28px; font-size: 0.85rem; margin-left: 10px; }
+        .log-panel { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px 18px; margin-top: 18px; max-height: 180px; overflow-y: auto; font-size: 0.8rem; color: var(--text-dim); line-height: 1.9; box-shadow: var(--shadow-panel); }
+        .log-entry { padding: 4px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .settings-panel { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; margin-top: 16px; box-shadow: var(--shadow-panel); }
+        .settings-panel h3 { color: var(--accent-cyan); margin-bottom: 16px; font-size: 1.1rem; }
+        .shake-effect { animation: shakeScreen 0.5s ease-out; }
+        @keyframes shakeScreen { 0%,100%{transform:translate(0,0)} 10%{transform:translate(-8px,4px)} 20%{transform:translate(8px,-4px)} 30%{transform:translate(-6px,6px)} 40%{transform:translate(6px,-6px)} 50%{transform:translate(-4px,2px)} 60%{transform:translate(4px,-2px)} 70%{transform:translate(-2px,1px)} 80%{transform:translate(2px,-1px)} 90%{transform:translate(-1px,0)} }
+        .flash-effect { animation: flashScreen 0.6s ease-out; }
+        @keyframes flashScreen { 0%,100%{background-color:var(--bg-primary)} 50%{background-color:rgba(220,38,38,0.3)} }
+        .glow-panel { animation: glowPanel 1.5s ease-in-out infinite; }
+        @keyframes glowPanel { 0%,100%{box-shadow:0 0 15px rgba(5,150,105,0.2)} 50%{box-shadow:0 0 40px rgba(5,150,105,0.5)} }
+        .rain-effect { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:50; background: linear-gradient(to bottom, transparent, rgba(220,38,38,0.15), transparent); animation:rainDrop 2s linear infinite; }
+        @keyframes rainDrop { 0%{background-position:0 0} 100%{background-position:0 100vh} }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes sceneIn { from{opacity:0;transform:translateY(15px)} to{opacity:1;transform:translateY(0)} }
+        .lang-selector { display: flex; gap: 8px; margin: 15px 0; flex-wrap: wrap; justify-content: center; }
+        .lang-btn { padding: 8px 16px; border: 2px solid var(--border-color); border-radius: 8px; cursor: pointer; background: var(--bg-panel); color: var(--text-primary); font-weight: 500; font-size: 0.85rem; transition: all 0.3s ease; }
+        .lang-btn.active { border-color: var(--accent-green); background: rgba(5,150,105,0.08); color: var(--accent-green); }
+        .lang-btn:hover { border-color: var(--accent-cyan); }
+        @media (max-width: 600px) { .game-container { padding: 10px; } #title-screen h1 { font-size: 2.2rem; } .dialogue-panel { padding: 18px 14px; min-height: 180px; } .btn { padding: 12px 18px; font-size: 0.9rem; min-width: 150px; } .choice-btn { padding: 13px 14px; font-size: 0.85rem; } .save-slots-grid { grid-template-columns: repeat(2,1fr); gap:10px; } .save-slot { min-height: 110px; padding: 14px 10px; } }
+        @media (max-width: 380px) { #title-screen h1 { font-size: 1.7rem; } .save-slots-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <canvas id="particles-canvas"></canvas>
+    <div class="hamburger-menu" id="hamburger-btn" onclick="toggleMenu()">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    </div>
+    <div class="menu-overlay" id="menu-overlay">
+        <div class="menu-title">⚡ <span data-trans="menu">منوی اصلی</span></div>
+        <div class="menu-item" onclick="showGameSection()">🎮 <span data-trans="game">بازی</span></div>
+        <div class="menu-item" onclick="showSettingsSection()">⚙️ <span data-trans="settings">تنظیمات</span></div>
+        <div class="menu-item" onclick="backToSaveSlots()">💾 <span data-trans="backToSaves">بازگشت به سیوها</span></div>
+        <div class="menu-item" onclick="restartGame()" style="color:var(--accent-red);border-color:rgba(220,38,38,0.3);">🔄 <span data-trans="restart">شروع مجدد</span></div>
+    </div>
+    <div class="game-container">
+        <div id="save-slots-screen">
+            <h1>🎯 ندای حقیقت</h1>
+            <div class="subtitle">جنگ هوایی — Call of Truth; Air War</div>
+            <p style="color:var(--text-secondary);margin-bottom:20px;" data-trans="chooseSave">یک سیو را انتخاب کنید</p>
+            <div class="save-slots-grid" id="save-slots-grid"></div>
+        </div>
+        <div id="title-screen" style="display:none;">
+            <div class="military-badge">⚡ عملیات ویژه ⚡</div>
+            <h1>ندای حقیقت</h1>
+            <div class="subtitle">جنگ هوایی</div>
+            <div class="tribute">
+                <span style="font-size:1.2rem;color:var(--accent-cyan);font-weight:700;display:block;margin-bottom:10px;">به نام خدا</span>
+                به بازی «ندای حقیقت؛ جنگ هوایی» خوش آمدید.<br>
+                این بازی به یاد شهدای دفاع مقدس و مدافعان وطن ساخته شده است...
+            </div>
+            <button class="btn btn-primary" onclick="showNameInput()">شروع مأموریت</button>
+        </div>
+        <div id="name-input-section" style="display:none;">
+            <h2>🎖️ نام قهرمان داستان را وارد کنید</h2>
+            <div class="name-input-wrapper">
+                <input type="text" id="player-name-input" placeholder="مثلاً: سروان کریمی" maxlength="30" autocomplete="off">
+                <button class="btn btn-primary" onclick="submitName()">تأیید</button>
+            </div>
+        </div>
+        <div id="game-screen" style="display:none;">
+            <div class="game-header">
+                <span class="game-title-small">⚡ ندای حقیقت؛ جنگ هوایی</span>
+                <div class="player-info">
+                    <span class="player-name-badge" id="display-player-name">—</span>
+                    <span class="clue-counter" id="clue-counter-display">🔍 سرنخ‌ها: ۰</span>
+                </div>
+            </div>
+            <div class="dialogue-panel" id="dialogue-panel">
+                <div class="speaker-name" id="speaker-name">
+                    <span class="speaker-icon" id="speaker-icon-dot"></span>
+                    <span id="speaker-text"></span>
+                </div>
+                <div class="dialogue-text" id="dialogue-text"></div>
+            </div>
+            <div class="choices-container" id="choices-container"></div>
+            <div class="log-panel" id="log-panel">
+                <div style="font-weight:700;color:var(--accent-cyan);margin-bottom:6px;">📋 گزارش مأموریت</div>
+                <div id="log-entries"></div>
+            </div>
+            <div class="settings-panel" id="settings-panel" style="display:none;">
+                <h3>⚙️ تنظیمات</h3>
+                <p style="color:var(--text-secondary);margin-bottom:10px;">زبان بازی:</p>
+                <div class="lang-selector" id="lang-selector">
+                    <button class="lang-btn active" data-lang="fa" onclick="setLanguage('fa')">فارسی</button>
+                    <button class="lang-btn" data-lang="en" onclick="setLanguage('en')">English</button>
+                    <button class="lang-btn" data-lang="ar" onclick="setLanguage('ar')">العربية</button>
+                    <button class="lang-btn" data-lang="he" onclick="setLanguage('he')">עברית</button>
+                </div>
+                <button class="btn btn-primary" style="margin-top:15px;min-width:auto;" onclick="showGameSection()">بازگشت به بازی</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // ===================== LANGUAGE SYSTEM =====================
+        const Translations = {
+            fa: { title:'ندای حقیقت', subtitle:'جنگ هوایی', bismillah:'به نام خدا', welcome:'به بازی «ندای حقیقت؛ جنگ هوایی» خوش آمدید.', tribute:'این بازی به یاد شهدای دفاع مقدس و مدافعان وطن ساخته شده است...', startMission:'شروع مأموریت', enterName:'نام قهرمان داستان را وارد کنید', confirm:'تأیید', chooseSave:'یک سیو را انتخاب کنید', game:'بازی', settings:'تنظیمات', restart:'شروع مجدد', language:'زبان بازی', backToGame:'بازگشت به بازی', emptySlot:'خالی', slot:'سیو', clues:'سرنخ‌ها', missionLog:'گزارش مأموریت', menu:'منوی اصلی', backToSaves:'بازگشت به سیوها', delete:'حذف' },
+            en: { title:'Call of Truth', subtitle:'Air War', bismillah:'In the name of God', welcome:'Welcome to "Call of Truth; Air War".', tribute:'This game is made in memory of the martyrs of the Holy Defense and defenders of the homeland...', startMission:'Start Mission', enterName:'Enter the hero\'s name', confirm:'Confirm', chooseSave:'Choose a save slot', game:'Game', settings:'Settings', restart:'Restart', language:'Game Language', backToGame:'Back to Game', emptySlot:'Empty', slot:'Slot', clues:'Clues', missionLog:'Mission Log', menu:'Main Menu', backToSaves:'Back to Saves', delete:'Delete' },
+            ar: { title:'نداء الحقيقة', subtitle:'الحرب الجوية', bismillah:'بسم الله', welcome:'مرحباً بك في "نداء الحقيقة؛ الحرب الجوية".', tribute:'هذه اللعبة صنعت تخليداً لذكرى شهداء الدفاع المقدس والمدافعين عن الوطن...', startMission:'بدء المهمة', enterName:'أدخل اسم البطل', confirm:'تأكيد', chooseSave:'اختر خانة الحفظ', game:'اللعبة', settings:'الإعدادات', restart:'إعادة التشغيل', language:'لغة اللعبة', backToGame:'العودة للعبة', emptySlot:'فارغ', slot:'خانة', clues:'الأدلة', missionLog:'سجل المهمة', menu:'القائمة الرئيسية', backToSaves:'العودة إلى الحفظ', delete:'حذف' },
+            he: { title:'קול האמת', subtitle:'מלחמה אווירית', bismillah:'בשם אלוהים', welcome:'ברוכים הבאים ל"קול האמת; מלחמה אווירית".', tribute:'המשחק הזה נוצר לזכר חללי ההגנה הקדושה ומגיני המולדת...', startMission:'התחל משימה', enterName:'הזן את שם הגיבור', confirm:'אשר', chooseSave:'בחר חריץ שמירה', game:'משחק', settings:'הגדרות', restart:'התחל מחדש', language:'שפת המשחק', backToGame:'חזרה למשחק', emptySlot:'ריק', slot:'חריץ', clues:'רמזים', missionLog:'יומן משימה', menu:'תפריט ראשי', backToSaves:'חזרה לשמירות', delete:'מחק' }
+        };
+        let currentLanguage = 'fa';
+        function setLanguage(lang) { currentLanguage=lang; applyTranslations(); if(GameState.currentSlot) saveToSlot(GameState.currentSlot); document.querySelectorAll('.lang-btn').forEach(btn=>btn.classList.toggle('active', btn.dataset.lang===lang)); document.documentElement.lang=lang; document.documentElement.dir='rtl'; AudioEngine.clickSound(); }
+        function applyTranslations() { const t=Translations[currentLanguage]||Translations.fa; document.title=t.title+'; '+t.subtitle; document.querySelectorAll('[data-trans]').forEach(el=>{ const key=el.getAttribute('data-trans'); if(t[key]) el.textContent=t[key]; }); const saveTitle=document.querySelector('#save-slots-screen h1'); if(saveTitle) saveTitle.textContent='🎯 '+t.title; const saveSub=document.querySelector('#save-slots-screen .subtitle'); if(saveSub) saveSub.textContent=t.subtitle+' — Call of Truth; Air War'; const chooseSaveP=document.querySelector('#save-slots-screen p[data-trans="chooseSave"]'); if(chooseSaveP) chooseSaveP.textContent=t.chooseSave; const titleH1=document.querySelector('#title-screen h1'); if(titleH1) titleH1.textContent=t.title; const titleSub=document.querySelector('#title-screen .subtitle'); if(titleSub) titleSub.textContent=t.subtitle; const tribute=document.querySelector('#title-screen .tribute'); if(tribute) tribute.innerHTML=`<span style="font-size:1.2rem;color:var(--accent-cyan);font-weight:700;display:block;margin-bottom:10px;">${t.bismillah}</span>${t.welcome}<br>${t.tribute}`; const startBtn=document.querySelector('#title-screen .btn'); if(startBtn) startBtn.textContent=t.startMission; const nameH2=document.querySelector('#name-input-section h2'); if(nameH2) nameH2.textContent='🎖️ '+t.enterName; const nameBtn=document.querySelector('#name-input-section .btn'); if(nameBtn) nameBtn.textContent=t.confirm; const clueDisplay=document.getElementById('clue-counter-display'); if(clueDisplay) clueDisplay.textContent='🔍 '+t.clues+': '+GameState.clueCounter; const logTitle=document.querySelector('#log-panel div'); if(logTitle) logTitle.textContent='📋 '+t.missionLog; const settingsTitle=document.querySelector('#settings-panel h3'); if(settingsTitle) settingsTitle.textContent='⚙️ '+t.settings; const langLabel=document.querySelector('#settings-panel p'); if(langLabel) langLabel.textContent=t.language+':'; const backBtn=document.querySelector('#settings-panel .btn'); if(backBtn) backBtn.textContent=t.backToGame; updateSaveSlotsUI(); }
+
+        // ===================== AUDIO ENGINE =====================
+        const AudioEngine = {
+            ctx:null, masterGain:null, initialized:false, ambientOsc:null,
+            init(){ if(this.initialized) return; try{ this.ctx=new(window.AudioContext||window.webkitAudioContext)(); this.masterGain=this.ctx.createGain(); this.masterGain.gain.value=0.2; this.masterGain.connect(this.ctx.destination); this.initialized=true; this.startAmbient(); }catch(e){} },
+            resume(){ if(this.ctx && this.ctx.state==='suspended') this.ctx.resume(); },
+            playTone(freq,duration,type='sine',vol=0.25){ if(!this.initialized||!this.ctx) return; try{ const osc=this.ctx.createOscillator(); const gain=this.ctx.createGain(); osc.type=type; osc.frequency.value=freq; gain.gain.setValueAtTime(vol,this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+duration); osc.connect(gain); gain.connect(this.masterGain); osc.start(); osc.stop(this.ctx.currentTime+duration); }catch(e){} },
+            clickSound(){ this.playTone(650,0.07,'sine',0.18); setTimeout(()=>this.playTone(850,0.05,'sine',0.12),40); },
+            typeSound(){ this.playTone(400+Math.random()*200,0.015,'sine',0.05); },
+            alertSound(){ this.playTone(880,0.12,'square',0.15); setTimeout(()=>this.playTone(660,0.12,'square',0.15),140); setTimeout(()=>this.playTone(880,0.15,'square',0.15),280); },
+            successSound(){ this.playTone(523,0.1,'sine',0.2); setTimeout(()=>this.playTone(659,0.1,'sine',0.2),110); setTimeout(()=>this.playTone(784,0.15,'sine',0.25),220); },
+            dramaticSound(){ this.playTone(220,0.35,'sawtooth',0.1); setTimeout(()=>this.playTone(160,0.4,'sawtooth',0.08),180); },
+            startAmbient(){ if(!this.initialized||!this.ctx) return; try{ const osc=this.ctx.createOscillator(); const gain=this.ctx.createGain(); osc.type='sine'; osc.frequency.value=48; gain.gain.value=0.01; osc.connect(gain); gain.connect(this.masterGain); osc.start(); this.ambientOsc=osc; }catch(e){} }
+        };
+
+        // ===================== PARTICLE SYSTEM =====================
+        const particlesCanvas=document.getElementById('particles-canvas'); const pCtx=particlesCanvas.getContext('2d'); let particles=[],pAnimationId=null;
+        function resizeCanvas(){ particlesCanvas.width=window.innerWidth; particlesCanvas.height=window.innerHeight; } resizeCanvas(); window.addEventListener('resize',resizeCanvas);
+        function createParticle(){ return { x:Math.random()*particlesCanvas.width, y:Math.random()*particlesCanvas.height, vx:(Math.random()-0.5)*0.2, vy:(Math.random()-0.5)*0.2, size:Math.random()*1.8+0.3, alpha:Math.random()*0.25+0.05, pulse:Math.random()*Math.PI*2, color:Math.random()>0.7?'#0891b2':'#059669' }; }
+        for(let i=0;i<60;i++) particles.push(createParticle());
+        function animateParticles(){ pCtx.clearRect(0,0,particlesCanvas.width,particlesCanvas.height); particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.pulse+=0.02; if(p.x<0)p.x=particlesCanvas.width; if(p.x>particlesCanvas.width)p.x=0; if(p.y<0)p.y=particlesCanvas.height; if(p.y>particlesCanvas.height)p.y=0; const alpha=p.alpha*(0.6+0.4*Math.sin(p.pulse)); pCtx.beginPath(); pCtx.arc(p.x,p.y,p.size,0,Math.PI*2); pCtx.fillStyle=p.color.replace(')',`,${alpha})`).replace('rgb','rgba'); pCtx.fill(); }); pAnimationId=requestAnimationFrame(animateParticles); } animateParticles();
+
+        // ===================== GAME STATE =====================
+        const GameState={ playerName:'', trust:{amiri:50,raha:50,farahmand:50,mousavi:50,rastgar:50}, clues:[], clueCounter:0, log:[], currentNode:'intro', typewriterActive:false, typewriterInterval:null, currentTextIndex:0, fullText:'', typewriterDone:false, storyPath:null, currentSlot:null };
+
+        // ===================== SPECIAL EFFECTS =====================
+        function triggerShake(){ const panel=document.getElementById('dialogue-panel'); if(panel){panel.classList.add('shake-effect'); setTimeout(()=>panel.classList.remove('shake-effect'),600);} }
+        function triggerFlash(){ document.body.classList.add('flash-effect'); setTimeout(()=>document.body.classList.remove('flash-effect'),700); }
+        function triggerGlow(){ const panel=document.getElementById('dialogue-panel'); if(panel){panel.classList.add('glow-panel'); setTimeout(()=>panel.classList.remove('glow-panel'),3000);} }
+        function triggerRain(){ const rain=document.createElement('div'); rain.className='rain-effect'; rain.id='rain-effect'; document.body.appendChild(rain); setTimeout(()=>{const existing=document.getElementById('rain-effect'); if(existing)existing.remove();},3000); }
+        function triggerSpecialEffect(type){ switch(type){ case 'shake': triggerShake(); AudioEngine.alertSound(); break; case 'flash': triggerFlash(); AudioEngine.dramaticSound(); break; case 'glow': triggerGlow(); AudioEngine.successSound(); break; case 'rain': triggerRain(); AudioEngine.alertSound(); break; case 'dramatic': triggerShake(); triggerFlash(); AudioEngine.dramaticSound(); break; case 'revelation': triggerGlow(); AudioEngine.successSound(); setTimeout(()=>triggerShake(),400); break; } }
+
+        // ===================== SAVE SYSTEM =====================
+        function getSaveData(slot){ try{ const data=localStorage.getItem('call_of_truth_save_'+slot); return data?JSON.parse(data):null; }catch(e){ return null; } }
+        function saveToSlot(slot){ GameState.currentSlot=slot; const saveData={ playerName:GameState.playerName, trust:{...GameState.trust}, clues:[...GameState.clues], clueCounter:GameState.clueCounter, log:[...GameState.log], currentNode:GameState.currentNode, storyPath:GameState.storyPath, language:currentLanguage, timestamp:Date.now() }; localStorage.setItem('call_of_truth_save_'+slot,JSON.stringify(saveData)); updateSaveSlotsUI(); }
+        function loadFromSlot(slot){ const data=getSaveData(slot); if(!data) return false; GameState.playerName=data.playerName||''; GameState.trust={...data.trust}||{amiri:50,raha:50,farahmand:50,mousavi:50,rastgar:50}; GameState.clues=data.clues||[]; GameState.clueCounter=data.clueCounter||0; GameState.log=data.log||[]; GameState.currentNode=data.currentNode||'intro'; GameState.storyPath=data.storyPath||null; GameState.currentSlot=slot; if(data.language) setLanguage(data.language); return true; }
+        function deleteSlot(slot){ localStorage.removeItem('call_of_truth_save_'+slot); updateSaveSlotsUI(); }
+        function updateSaveSlotsUI(){ const grid=document.getElementById('save-slots-grid'); if(!grid) return; const t=Translations[currentLanguage]||Translations.fa; grid.innerHTML=''; for(let i=1;i<=6;i++){ const data=getSaveData(i); const slotDiv=document.createElement('div'); slotDiv.className='save-slot'+(data?'':' empty'); slotDiv.innerHTML=`<div class="slot-number">${t.slot} ${i}</div>${data?`<div class="slot-player">${data.playerName||'—'}</div><div class="slot-info">${new Date(data.timestamp).toLocaleDateString(currentLanguage==='fa'?'fa-IR':currentLanguage==='ar'?'ar':currentLanguage==='he'?'he':'en-US')}</div><div class="slot-info">${t.clues}: ${data.clueCounter||0}</div><button class="delete-btn" onclick="event.stopPropagation();deleteSlot(${i})">${t.delete}</button>`:`<div class="slot-info">${t.emptySlot}</div>`}`; slotDiv.addEventListener('click',()=>selectSaveSlot(i)); grid.appendChild(slotDiv); } }
+        function selectSaveSlot(slot){ AudioEngine.init(); AudioEngine.resume(); AudioEngine.clickSound(); const data=getSaveData(slot); if(data){ if(loadFromSlot(slot)){ document.getElementById('save-slots-screen').style.display='none'; document.getElementById('game-screen').style.display='block'; document.getElementById('hamburger-btn').style.display='flex'; updateUI(); loadNode(GameState.currentNode); } } else { GameState.currentSlot=slot; GameState.playerName=''; GameState.trust={amiri:50,raha:50,farahmand:50,mousavi:50,rastgar:50}; GameState.clues=[]; GameState.clueCounter=0; GameState.log=[]; GameState.currentNode='intro'; GameState.storyPath=null; document.getElementById('save-slots-screen').style.display='none'; document.getElementById('title-screen').style.display='block'; applyTranslations(); } }
+        function backToSaveSlots(){ AudioEngine.clickSound(); if(GameState.currentSlot) saveToSlot(GameState.currentSlot); document.getElementById('game-screen').style.display='none'; document.getElementById('hamburger-btn').style.display='none'; document.getElementById('save-slots-screen').style.display='block'; updateSaveSlotsUI(); GameState.currentSlot=null; }
+        function restartGame(){ if(confirm('آیا مطمئن هستید که می‌خواهید بازی را از اول شروع کنید؟')) { if(GameState.currentSlot) deleteSlot(GameState.currentSlot); GameState.currentSlot=null; GameState.playerName=''; GameState.trust={amiri:50,raha:50,farahmand:50,mousavi:50,rastgar:50}; GameState.clues=[]; GameState.clueCounter=0; GameState.log=[]; GameState.currentNode='intro'; GameState.storyPath=null; document.getElementById('game-screen').style.display='none'; document.getElementById('hamburger-btn').style.display='none'; document.getElementById('save-slots-screen').style.display='block'; updateSaveSlotsUI(); AudioEngine.clickSound(); } }
+
+        // ===================== STORY DATA =====================
+        const StoryNodes = {};
+        function addNode(id,data){ StoryNodes[id]=data; }
+        function speaker(name,text,extraClass='',effect=null){ return {speaker:name,text:name?text:text,extraClass,effect}; }
+        function choice(text,nextNode,effects={}){ return {text,nextNode,effects}; }
+        const SpeakerColors={'سرتیپ موسوی':'#2563eb','سرلشگر امیری':'#059669','رها نادری':'#7c3aed','یونس فرهمند':'#ea580c','دکتر رحمانی':'#dc2626','راوی':'#b45309','سیستم':'#64748b','اتاق جلسه':'#0891b2','لپ‌تاپ':'#059669','فایل اول':'#7c3aed','فایل زیپ':'#ea580c','پخش ویس':'#dc2626','هشدار عملیاتی':'#b45309'};
+        function getSpeakerColor(name){ return SpeakerColors[name]||'#0891b2'; }
+
+        // ===== STORY NODES (all nodes from original) =====
+        addNode('intro',{ speaker:'راوی', text:'در این بازی، تو در نقش مدیر ویژه یک گروه هوایی فعالیت می‌کنی؛\nگروهی که مأموریتش فقط پیروزی در آسمان نیست،\nبلکه حفظ جان مردم، کشف حقیقت و جلوگیری از یک فاجعه بزرگ است.\n\nهر تصمیمی که می‌گیری، پیامد خودش را دارد.\nگاهی باید بین سرعت و دقت انتخاب کنی.\nگاهی بین اعتماد به یک همکار و حفظ اطلاعات محرمانه.\nو گاهی باید تصمیم بگیری که آیا حقیقت را به همه بگویی یا برای محافظت از مردم، بخشی از آن را پنهان کنی.', choices:[choice('۱. بله، آماده‌ام.','chapter1_intro_a',{path:'ready'}),choice('۲. قبل از شروع، درباره مأموریت توضیح بدهید.','chapter1_intro_b',{path:'explain'}),choice('۳. من برای چنین مسئولیتی آموزش ندیده‌ام.','chapter1_intro_c',{path:'not_trained'})], effect:'glow' });
+        addNode('chapter1_intro_a',{ speaker:'سرتیپ موسوی', text:'سلام '+(GameState.playerName||'قهرمان')+'، تو از امروز سرپرست ویژه گروه «آذرخش» هستی، گروهی مستقیماً زیر نظر نیروی هوایی سپاه فعالیت می‌کند.\nاعضای گروه تو در سه حوزه ماهر هستند: شناسایی، دفاع و پشتیبانی پروازی و پدافندی.\nموفق باشی! 💪', choices:[choice('ادامه...','chapter1_team_intro')], effect:'success' });
+        addNode('chapter1_intro_b',{ speaker:'سرتیپ موسوی', text:'سلام '+(GameState.playerName||'قهرمان')+'، تو از امروز سرپرست ویژه گروه «آذرخش» هستی، گروهی مستقیماً زیر نظر نیروی هوایی سپاه فعالیت می‌کند.\nاعضای تو در سه حوزه ماهر هستند: شناسایی، دفاع و پشتیبانی پروازی.\nبقیه موارد رو هم خودت به زودی متوجه می‌شی.', choices:[choice('ادامه...','chapter1_team_intro')], effect:'success' });
+        addNode('chapter1_intro_c',{ speaker:'سرتیپ موسوی', text:'سلام '+(GameState.playerName||'قهرمان')+'، از امروز تو سرپرست ویژه گروه «آذرخش» هستی.\nاعضای تو در سه حوزه ماهر هستند: دفاع، شناسایی و پشتیبانی پروازی و پدافندی.\nخودت به‌زودی همه‌چیز را می‌فهمی. 😉', choices:[choice('ادامه...','chapter1_team_intro')], effect:'success' });
+        addNode('chapter1_team_intro',{ speaker:'سرتیپ موسوی', text:'فصل اول: بحران ناشناس\n\nخب خلبان، امروز اولین روز کاریت در اینجاست و باید با همکارانت آشنا بشی، من اونا رو بهت معرفی می‌کنم.\n\nایشون آقای امیری هستن، دستیار ویژه‌ی شما که بهتون در انجام مأموریت‌ها کمک می‌کنن.', choices:[choice('ادامه...','team_amiri_intro')], effect:'dramatic' });
+        addNode('team_amiri_intro',{ speaker:'سرلشگر امیری', text:'سلام جناب، خیلی خوشحالم که باهاتون آشنا شدم، در خدمتتون هستم.\nمن رابط شما با مرکز فرماندهی هستم.\nگزارش‌ها ابتدا به دست من می‌رسند و بعد برای تصمیم‌گیری به تو منتقل می‌شوند.\n\nسه قانون مهم وجود داره:\nیک: امنیت مردم همیشه اولویت داره.\nدو: هیچ گزارشی را بدون بررسی کامل، حقیقت قطعی فرض نکن.\nسه: اگر تصمیمی گرفتی، مسئولیت پیامدش را هم بپذیر.', choices:[choice('ادامه...','team_raha_intro')] });
+        addNode('team_raha_intro',{ speaker:'سرتیپ موسوی', text:'حالا باید با رها نادری آشنا بشی، ایشون مسئول ارتباطات و امنیت گروه هستند.', choices:[choice('ادامه...','team_raha_speaks')] });
+        addNode('team_raha_speaks',{ speaker:'رها نادری', text:'سلام.\nامیدوارم از آن فرمانده‌هایی نباشی که فقط عدد و نمودار می‌بینن.\nپشت هر نقطه روی نقشه، آدم‌هایی واقعی زندگی می‌کنن.', choices:[choice('ادامه...','team_farahmand_intro')] });
+        addNode('team_farahmand_intro',{ speaker:'سرتیپ موسوی', text:'این هم یونس فرهمند؛ مسئول هماهنگی امداد هوایی.', choices:[choice('ادامه...','team_farahmand_speaks')] });
+        addNode('team_farahmand_speaks',{ speaker:'یونس فرهمند', text:'خوشحالم که با شما کار می‌کنم.\nمن یک درخواست دارم:\nدر هر تصمیمی، مسیر بازگشت و امکان امدادرسانی را فراموش نکنیم.\nمن اهل سخنرانی نیستم.\nفقط می‌خواهم بدانم وقتی شرایط سخت شد، تصمیم‌هایتان سریع و روشن خواهد بود یا نه.', choices:[choice('۲.۱ تصمیم‌هایم سریع و قاطع خواهند بود.','choice_2_1',{trust_effect:{rastgar:5,raha:-5,farahmand:-5}}),choice('۲.۲ قبل از تصمیم‌گیری، نظر همه را می‌شنوم.','choice_2_2',{trust_effect:{amiri:10,raha:10,farahmand:10,mousavi:5}}),choice('۲.۳ هیچ تصمیمی را فقط برای نشان‌دادن قاطعیت نمی‌گیرم.','choice_2_3',{trust_effect:{raha:15,rastgar:-5}})] });
+        addNode('choice_2_1',{ speaker:'رها نادری', text:'رستگار به قاطعیت شما احترام می‌ذاره ولی یونس و رها نگران عجول بودن او می‌شن.', choices:[choice('ادامه...','radar_anomaly')] });
+        addNode('choice_2_2',{ speaker:'رها نادری', text:'این پاسخ نظر همه رو جلب می‌کنه و میزان اعتماد هم‌گروهی‌هاش نسبت بهش بیشتر می‌شه. ✨', choices:[choice('ادامه...','radar_anomaly')] });
+        addNode('choice_2_3',{ speaker:'رها نادری', text:'رها نادری به بازیکن اعتماد بسیاری می‌کنه ولی کاوه رستگار فکر می‌کنه اون یکم زیادی محتاطه.', choices:[choice('ادامه...','radar_anomaly')] });
+        addNode('radar_anomaly',{ speaker:'رها نادری', text:'صبر کنین، این علامت‌های عجیب روی کامپیوتر چی می‌گن! مثل اینکه شرایط مساعد نیست.', choices:[choice('ادامه...','mousavi_threat')], effect:'shake' });
+        addNode('mousavi_threat',{ speaker:'سرتیپ موسوی', text:'همون‌طوری که می‌دونید دوستان دشمن آمریکایی-صهیونی چند روز پیش به بیت رهبری حمله کرد و رهبر رو مظلومانه در محل کارش به شهادت رسوند و ۱۶۸ دانش‌آموز مینابی رو پرپر کرد پس بعید نیست در پی حملات گسترده‌تری علیه کشور باشه باید در نهایت آمادگی باشیم و جواب کوبنده‌ای بدیم.', choices:[choice('ادامه...','amiri_radar_question')], effect:'dramatic' });
+        addNode('amiri_radar_question',{ speaker:'سرلشگر امیری', text:'درسته، اما خانم نادری، کدوم علامت عجیب رو می‌گی؟', choices:[choice('ادامه...','raha_radar_detail')] });
+        addNode('raha_radar_detail',{ speaker:'رها نادری', text:'همون علامت عجیب، یک جنگنده دشمن که در نزدیکی مناطق مرزی سپیدار درحال گشت‌زنی هست، قبل‌تر هم یک هواپیمای امدادرسان ایرانی از رادار غیب شد.', choices:[choice('ادامه...','farahmand_alert')], effect:'shake' });
+        addNode('farahmand_alert',{ speaker:'یونس فرهمند', text:'این اتفاقات حاکی از اینن که باید رسماً دفاع رو شروع کنیم و دست روی دست نذاریم.', choices:[choice('ادامه...','mousavi_aircraft_question')] });
+        addNode('mousavi_aircraft_question',{ speaker:'سرتیپ موسوی', text:'اما خانم نادری، گفتی یک هواپیمای ایرانی از رادار حذف شده؟ چه کسی چنین گزارشی را پاک کرده؟', choices:[choice('ادامه...','amiri_access_denied')] });
+        addNode('amiri_access_denied',{ speaker:'سرلشگر امیری', text:'دسترسی ثبت نشده.\nیعنی یا سامانه خطا کرده یا کسی نمی‌خواسته گزارش باقی بمونه.', choices:[choice('ادامه...','three_reports')], effect:'dramatic' });
+        addNode('three_reports',{ speaker:'هشدار عملیاتی', text:'ناگهان از صفحه مانیتور، سه گزارش هم‌زمان و ناشناس به دست گروه آذرخش می‌رسد:\n\n📋 گزارش ۱:\nیک پرواز ناشناس در منطقه سپیدار دیده شده.\n\n📋 گزارش ۲:\nیک هواپیمای امدادرسان با نام «امداد ۷» ارتباط خودش رو با مرکز از دست داده.\n\n📋 گزارش ۳:\nبعضی رسانه‌های محلی خبر از حمله‌ای در مناطق جنوب کشور می‌دن.', extraClass:'system-message', choices:[choice('ادامه...','mousavi_three_leads')], effect:'flash' });
+        addNode('mousavi_three_leads',{ speaker:'سرتیپ موسوی', text:'سه سرنخ واضح.\nسه گزارش در کمتر از پنج دقیقه.\nاین احتمال وجود دارد که هر سه به هم مربوط باشن.', choices:[choice('ادامه...','raha_maybe_trap')] });
+        addNode('raha_maybe_trap',{ speaker:'رها نادری', text:'یا ممکنه کسی بخواد ما فکر کنیم اینا بهم مرتبطن.', choices:[choice('ادامه...','farahmand_aircraft_priority')] });
+        addNode('farahmand_aircraft_priority',{ speaker:'یونس فرهمند', text:'هواپیمای امدادرسان امداد ۷ حامل تجهیزات پزشکیه ما باید از وضعیت خدمه و بیماران مطلع بشیم خانم نادری لطفاً بررسی کنید.', choices:[choice('ادامه...','farahmand_ask_priority')] });
+        addNode('farahmand_ask_priority',{ speaker:'یونس فرهمند', text:'اما فرمانده '+(GameState.playerName||'قهرمان')+' عزیز، شما چه کاری رو در اولویت قرار می‌دید؟', choices:[choice('۳.۱ پیگیری وضعیت هواپیمای امدادی','choice_3_1',{path:'priority_aircraft'}),choice('۳.۲ بررسی جنگنده مشکوک دشمن','choice_3_2',{path:'priority_fighter'}),choice('۳.۳ بررسی هر دو مورد بالا','choice_3_3',{path:'priority_both'})] });
+        addNode('choice_3_1',{ speaker:'رها نادری', text:'قربان من هیچ اطلاعاتی نتونستم پیدا کنم ولی یک پیام ناشناس مرموز دریافت کردم:\n📨 پیام ناشناس: «بهتره زیاد دنبال چیزی که هستید نگردید چون واستون بد تموم می‌شه.»', choices:[choice('ادامه...','meeting_room')], effect:'shake' });
+        addNode('choice_3_2',{ speaker:'رها نادری', text:'قربان جنگنده دشمن بعد از یک دور طولانی به امارات برگشت این حرکات مشکوک نشون دهنده اینه که می‌خوان احتمالاً با جنگنده حمله کنن.', choices:[choice('ادامه...','meeting_room')], effect:'dramatic' });
+        addNode('choice_3_3',{ speaker:'رها نادری', text:'قربان من هیچ اطلاعاتی نتونستم پیدا کنم ولی یک پیام ناشناس مرموز دریافت کردم:\n📨 پیام ناشناس: «بهتره زیاد دنبال چیزی که هستید نگردید چون واستون بد تموم می‌شه.»\n\nقربان جنگنده دشمن بعد از یک دور طولانی به امارات برگشت این حرکات مشکوک نشون دهنده اینه که می‌خوان احتمالاً با جنگنده حمله کنن.', choices:[choice('ادامه...','meeting_room')], effect:'shake' });
+        addNode('meeting_room',{ speaker:'سرتیپ موسوی', text:'پس فعلاً نمی‌دونیم با یک تهدید واقعی طرفیم یا یک گزارش جعلی.\nاما یک چیز قطعیه:\nکسی می‌خواهد توجه ما را به این نقطه جلب کنه.', choices:[choice('ادامه...','meeting_room_summary')] });
+        addNode('meeting_room_summary',{ speaker:'اتاق جلسه', text:'تا اینجا چند نکته روشن شده:\nیک: یک پرواز ناشناس یا گزارش مربوط به اون وجود داره.\nدو: ارتباط امداد ۷ قطع شده یا چنین وانمود شده.\nسه: شایعه حمله پیش از کامل‌شدن گزارش‌ها منتشر شده.\nچهار: بخشی از اطلاعات از سامانه حذف شده.\n\nحالا باید تصمیم بگیریم با اطلاعات ناقص چه کنیم.', choices:[choice('ادامه...','amiri_suggestion')], effect:'dramatic' });
+        addNode('amiri_suggestion',{ speaker:'سرلشگر امیری', text:'پیشنهاد من اینه که بدون تأیید اطلاعات، هیچ واکنش مستقیمی نشون ندیم. هنوز مشخص نیست با یک تهدید واقعی روبه‌رو هستیم یا یک عملیات فریب.', choices:[choice('ادامه...','farahmand_objection')] });
+        addNode('farahmand_objection',{ speaker:'یونس فرهمند', text:'در هر صورت، «امداد ۷» باید در اولویت باشه. ما هنوز نمی‌دونیم خدمه و بیماران داخل آن در چه وضعیتی هستن.', choices:[choice('ادامه...','final_decision_4')] });
+        addNode('final_decision_4',{ speaker:'سرلشگر امیری', text:'فرمانده '+(GameState.playerName||'قهرمان')+'، دستور نهایی شما چیه؟', choices:[choice('۴.۱ بررسی بیشتر و دقیق‌تر وضعیت هواپیمای امدادی','choice_4_1',{path:'investigate_aircraft'}),choice('۴.۲ اعلام آماده‌باش سامانه‌های پدافندی برای مقابله با تهدیدات احتمالی','choice_4_2',{path:'defense_alert'})] });
+        addNode('choice_4_1',{ speaker:'رها نادری', text:'قربان من تونستم با هواپیمای امدادی ارتباط بگیرم الان می‌تونیم باهاشون صحبت کنیم.\n\n📡 نویز ضعیف: «ســلام، کسی صدای ما رو داره؟ ما گم شدیم.»\n\n🗣️ فرمانده: «صدای شما دریافت شد، می‌تونید مختصات تقریبی‌تون رو ارسال کنید؟ الان در چه وضعیتی هستید؟»\n\n📡 صدای نویزدار: «بله ما در استان خوزستان هستیم اما سوخت... کمه... لطفا کمک...»\n\n🗣️ امیری: «مثل اینکه صدا قطع و وصل می‌شه و نمی‌تونیم صداتون رو بشنویم لطفاً مجدداً تکرار کنین.»\n\n📡 صدای نویزدار: «ما در... خوزستان... سوخت هواپیما کمه... لطفاً نیروی کمکی... ارسال کنید به هواپیمای ما... حمله شده... پشش...» [قطع ارتباط]\n\nرها نادری: «مثل اینکه ارتباط قطع شد.»\nیونس فرهمند: «فوراً نیروی کمکی اعزام کنید.»', choices:[choice('ادامه...','next_day_5')], effect:'rain' });
+        addNode('choice_4_2',{ speaker:'سرتیپ موسوی', text:'قربان همه‌ی سامانه‌های پدافندی در حالت آماده‌باش کامل قرار گرفتند خیالتون راحت.\n\n🗣️ فرمانده: «حملات به پایگاه‌های آمریکایی رو آغاز کنید.»\n\n(پایان جلسه)', choices:[choice('ادامه...','next_day_5')], effect:'dramatic' });
+        addNode('next_day_5',{ speaker:'سرلشگر امیری', text:'سلام فرمانده. صبحتون بخیر، هر سوالی دارید ازم بپرسین.', choices:[choice('۵.۱ وضعیت هواپیمای امداد ۷ چی شد؟','choice_5_1',{path:'ask_aircraft'}),choice('۵.۲ آیا به دشمن پاسخ کوبنده و محکم داده شد؟','choice_5_2',{path:'ask_response'}),choice('۵.۳ اصل کلام و مطلبی که رسانه‌ها می‌گن چیه؟','choice_5_3',{path:'ask_media'})] });
+        addNode('choice_5_1',{ speaker:'سرلشگر امیری', text:'خیالتون راحت فرمانده، آقای فرهمند هم مستقیماً با تیم امدادی‌شون به محل مختصات تقریبی هواپیمای امداد ۷ رفتن و الان خدمه و بیماران داخل اون هواپیما صحیح و در سلامت کامل هستن اما خلبان هواپیما می‌گه که یک جنگنده ناشناس بهشون حمله کرد و اونا مجبور به فرود اضطراری در نزدیکی‌های آبادان شدن.\n\n🗣️ فرمانده: «چه جالب... ممکنه که اون جنگنده همون جنگنده‌ای باشه که دیروز روی رادار دیدیمش نه؟»\n\nامیری: «راست می‌گید جناب دقیقاً مشخصاتی که خلبان هواپیمای امدادی می‌گه هم با مشخصات رادار مطابقت داشت!»\n\n🗣️ فرمانده: «این یک سرنخ خیلی خوبه که تونستیم کشفش کنیم.» (کد سرنخ: ۱)\n\n📌 پیام سیستم: این سرنخ‌ها را بخاطر داشته باشین در طول بازی به دردتون می‌خورن.', choices:[choice('ادامه...','visit_rahmani_6')], effect:'revelation' });
+        addNode('choice_5_2',{ speaker:'سرلشگر امیری', text:'بله جناب، تا همین الان حملات گسترده‌ای به پایگاه‌هاشون داشتیم، و هر طوری که شده انتقام خون شهدامون رو می‌گیریم مثل عزیزانی که مراسم عروسی‌شون تبدیل به عزا شد. و در کل خیالتون راحت.', choices:[choice('ادامه...','visit_rahmani_6')], effect:'dramatic' });
+        addNode('choice_5_3',{ speaker:'سرلشگر امیری', text:'جناب خلبان حقیقتش هر رسانه‌ای یه چیزی می‌گه ولی خب اکثر رسانه‌ها بر قدرت کشور ما تاکید دارن و در مورد این صحبت می‌کنن که ایران چطور تونسته در مقابل بهترین ارتش دنیا بایسته اما بعضی از رسانه‌ها سعی می‌کنن این موضوع رو انکار کنن.', choices:[choice('ادامه...','visit_rahmani_6')] });
+        addNode('visit_rahmani_6',{ speaker:'دکتر رحمانی', text:'گروه «آذرخش» به خانه‌ی خلبان هواپیمای «امداد ۷» می‌روند تا از خود خلبان سوالاتی بپرسند.\n\nدکتر رحمانی (خلبان هواپیمای امداد ۷): «سلام، خیلی ممنون که دعوتم رو پذیرفتید.»\n🗣️ فرمانده: «خواهش می‌کنیم جناب.»\nدکتر رحمانی: «خب هر سوالی دارید ازم بپرسین.»', choices:[choice('ادامه...','rahmani_questions')] });
+        addNode('rahmani_questions',{ speaker:'یونس فرهمند', text:'خب، به ما بگید الان وضعیت‌تون چطوره؟ حالتون خوبه؟\n\nدکتر رحمانی: «بله خدا رو شکر هیچ آسیبِ جدی ندیدم و خدمه هم سالم موندن.»\n\nموسوی: «خب خدا رو شکر، و سوالات دیگری هم از شما داریم. میشه به ما بگید که اون صدای نویزدار شما بودید یا کسِ دیگری بوده؟»\n\nدکتر رحمانی: «بله خودم بودم، واقعاً ازتون ممنونم که سیگنال ما رو گرفتید اگه شما جواب نمی‌دادید ما الان شاید...»\n\nرستگار: «نه آقای رحمانی همچین حرفی نزنید الحمدلله همچی خوب پیش رفته اینم لطف خدا بوده.»', choices:[choice('ادامه...','raha_asks_detail')] });
+        addNode('raha_asks_detail',{ speaker:'رها نادری', text:'آقای دکتر، میشه بهمون بگید که چه چیزی هواپیمای شما رو دقیقاً هدف گرفته بود و چی دیدین؟\n\nدکتر رحمانی: «بله می‌گم، ما داشتیم به سمت منطقه سپیدار می‌رفتیم چون یک کوهنورد از کوه پرت شده بود و شهری هم نزدیکش نبوده به ما تماس گرفتن و ما داشتیم به سمت منطقه می‌رفتیم که چیزی شبیه به جنگنده به ما حمله‌ور شد و یک موشک کوچک زد و سریعاً دور شد و رفت و سامانه ارتباطی ما به هم خورده بود و واقعاً خدا رحم کرد بهمون.»\n\nفرهمند: «وضع اون بیمار چی شد؟»\nدکتر رحمانی: «یک هواپیمای امدادی دیگه به کمک ایشون رفتن.»\nفرهمند: «بازم خدا رو شکر.»', choices:[choice('ادامه...','raha_asks_message')], effect:'dramatic' });
+        addNode('raha_asks_message',{ speaker:'رها نادری', text:'ما از شما یک پیام مرموز دریافت کرده بودیم که گفته بودید دنبال‌تون نیایم؟ اون از شما بود؟\n\nدکتر رحمانی: «نه ما نبودیم، من می‌دونم کار کیه.»\n\n🗣️ فرمانده: «کار چه کسی بوده؟»', choices:[choice('ادامه...','silence_7')], effect:'shake' });
+        addNode('silence_7',{ speaker:'دکتر رحمانی', text:'برای لحظه‌ای خانه ساکت می‌شود.\n\nدکتر رحمانی: «اون جنگنده، یک جنگنده عادی نبود، یک جنگنده سفید بود و بسیار عجیب.»\n\n🗣️ فرمانده: «از چه لحاظ عجیب بود؟»\n\nدکتر رحمانی: «نه، مورد عجیبِ خاصی نداشت، ولی وقتی که فرود اضطراری کردیم، یک فلش ۱۶ گیگی رو دیدم که روی زمین افتاده بود، از تمیزیش معلوم بود که کسی اون رو به تازگی در اونجا قرار داده.»\n\n🗣️ فرمانده: «خب این دقیقاً چه اهمیتی داره؟»\n\nدکتر رحمانی: «ما فقط در اون هواپیما تجهیزات پزشکی نداشتیم، یک جعبه داشتیم که متعلق به ما نبود...»\n\nفرهمند: «چه جعبه‌ای؟»', choices:[choice('ادامه...','flash_drive_revealed')], effect:'dramatic' });
+        addNode('flash_drive_revealed',{ speaker:'دکتر رحمانی', text:'(رحمانی پاسخی نمی‌دهد)\n(او یک فلش از جیبش در می‌آورد و می‌گوید:)\n\n«این همون فلشیه که گفتم.»\n\n(ناگهان تلفن رها زنگ می‌خورد)\n\n🗣️ فرمانده: «تلفن رو جواب بده و روی بلندگو بذار.»\n\n📞 صدای موبایل: «آن فلش رو باز نکنید.»\n\nموسوی: «تو کی هستی؟»\n\n📞 صدای موبایل: «کسی که می‌خواد جلوی یک فاجعه رو بگیره، قبل از اینکه شما اونو شروع کنید.»\n\n📞 صدای موبایل: «به نفع‌تونه باز نکنید.»\n\nرها نادری: «تهدید می‌کنی؟»\n\n📞 صدای موبایل: «نه، اما این رو بدونید که در گروه آذرخش، کسی وجود دارد که اطلاعات را به بیرون منتقل می‌کنه...»\n\n(تلفن قطع می‌شود)', choices:[choice('ادامه...','raha_clue_2')], effect:'flash' });
+        addNode('raha_clue_2',{ speaker:'رها نادری', text:'یک پیام برام اومده: «به هیچ گزارشی که فقط از یک منبع آمده اعتماد کامل نکنید.» (کد سرنخ: ۲)\n\n🗣️ فرمانده: «چه سرنخ جالبی، خیلی خوبه.»\n\nامیری: «ما باید فلش رو به مرکز فرماندهی تحویل بدیم.»\n\nرها: «نه! ممکنه این فلش آلوده به ویروس باشه، اول باید خودمون تستش کنیم.»\n\nرها نادری: «خب '+(GameState.playerName||'قهرمان')+'، تصمیم نهایی با شماست.»', choices:[choice('۷.۱ اول بررسی کنیم','choice_7_1',{path:'investigate_flash'}),choice('۷.۲ کمی صبر کنیم (از این موضوع بگذریم)','choice_7_2',{path:'wait_flash'})], effect:'revelation' });
+        addNode('choice_7_1',{ speaker:'رها نادری', text:'اعتماد رها نسبت به شما بیشتر می‌شود.\n\nرها نادری: «اگه فایل‌های این فلش واقعی باشن، یعنی یک یا چند نفر به دنبال این هستن که کشور رو وارد یک جنگ اطلاعاتی سنگین بکنن.»', choices:[choice('ادامه...','raha_laptop_801')], effect:'shake' });
+        addNode('raha_laptop_801',{ speaker:'رها نادری', text:'اما طبق تحقیقات من، از اونجایی که دشمن فرماندهان زیادی رو از ما گرفته از جمله شهید عباس بابایی، امیرعلی حاجی‌زاده، و حتی شهید رایان قاسمیان که کوچکترین شهید جنگ ۱۲ روزه بوده، نشون می‌ده دشمن آمریکایی-صهیونی ما همیشه به دنبال این بوده که جام مردم بی‌گناه کشورهای مختلف از جمله: ایران، عراق، افغانستان، ویتنام، فلسطین و... رو فقط برای منفعت خودش بگیره از نظامی بگیر تا غیرنظامی.\n\n🗣️ فرمانده: «آره درسته، اما حالا لطفاً فلش رو باز کن تا ببینیم چه فایل‌هایی داره.»', choices:[choice('ادامه...','files_revealed_801')], effect:'dramatic' });
+        addNode('files_revealed_801',{ speaker:'لپ‌تاپ', text:'روی لپ‌تاپ این نام‌ها دیده می‌شود:\n📄 Flight-7.txt\n📄 Radar.zip\n📄 PROJECT-SEPIDAR.rar.zip\n\nهمه فایل‌ها رمزگذاری شده هستن.\n\n🗣️ فرمانده: «رها، می‌تونی رمز این فایل‌ها رو به دست بیاری؟»\n\nرها نادری: «نیازی به پسورد نیست، این فایل‌ها حتی اگه رمزدار هم باشن به راحتی باز می‌شن.»', choices:[choice('ادامه...','first_file_801')] });
+        addNode('first_file_801',{ speaker:'فایل اول', text:'توی فایل نوشته:\n\n«بهتون گفته بودم فلش رو باز نکنید اما به حرفم نکردید،\nهیچ چیزه خاصی پیدا نمی‌کنید؛\nحالا هنوز متوجه نشدید من کی هستم؟\nشما جان کل گروه آذرخش رو به خطر انداختید\nجان از همین لحظه در خطر است.\nنباید فایل‌ها رو باز می‌کردید.»', choices:[choice('ادامه...','second_file_801')], effect:'shake' });
+        addNode('second_file_801',{ speaker:'فایل زیپ', text:'🗣️ فرمانده: «مطمئنی اگه فایل‌های بعدی رو باز کنیم اتفاقی نمی‌افته؟»\n\nرها: «نه نگران نباش من الان فایل بعدی باز می‌کنم.»\n\nرها: «خب در فایل زیپ یک ویس هست.»\n\n🔊 صدای ویس: «خب آقای رحمانی، آفرین به شما، خیلی خوب گولشون زدید، همینطور ادامه بدید.»\nرحمانی: «اما اگه اونا بفهمن چی؟»\n«نه آقای رحمانی خیالتون راحت اونا رو ترور می‌کنیم.»\nرحمانی: «باشه پس من با هواپیماهای مختلف عملیات‌های سردرگمی بوجود میارم و شمام یادتون نره برای هر دفعه‌ش ۱۰ هزار دلار بهم بدین...»', choices:[choice('ادامه...','shock_801')], effect:'flash' });
+        addNode('shock_801',{ speaker:'سیستم', text:'(رها و فرمانده با تعجب و نگرانی به هم نگاه می‌کنند)\n\nرها نادری: «یعنی چی!!!»\n🗣️ فرمانده: «پس... پس اونا می‌خواستن فقط ما رو گول بزنن. همه‌چی برنامه‌ریزی شده از قبل بود، رحمانی به کشورش خیانت کرد؛ خدایا الهی ما اینطور نباشیم و وطن‌فروش نباشیم.»\n\nرها نادری: «همه‌چی فقط یک برنامه بود از قبل و هماهنگ‌شده. مهم اینه که تجربه شد که به راحتی گول نخوریم.»\n\n🗣️ فرمانده: «دیگه چه فایل‌هایی در زیپ هست؟»\nرها نادری: «هیچی.»', choices:[choice('ادامه...','amiri_enters_801')], effect:'dramatic' });
+        addNode('amiri_enters_801',{ speaker:'سرلشگر امیری', text:'(ناگهان امیری وارد می‌شود)\n\n«دارید چیکار می‌کنید؟»\n\n🗣️ فرمانده: «فایل‌ها رو بررسی می‌کنیم.»\n\nامیری: «اما ما باید اول فلش رو به مرکز فرماندهی می‌دادیم.»\n\n🗣️ فرمانده: «درسته، ولی لزومی نداشت، شما لطفاً برو بچه‌ها رو جمع کن جلسه فوری داریم.»', choices:[choice('ادامه...','meeting_801')] });
+        addNode('meeting_801',{ speaker:'اتاق جلسه', text:'موسوی: «سلام فرمانده، چی شد که ما رو به این جلسه دعوت کردید؟»\n\nرها نادری: «ما چیزی رو فهمیدیم که خودمون هنوز باورمون نشده.»\n\nموسوی: «چه مشکلی پیش اومده؟»\n\n🗣️ فرمانده: «رحمانی رو یادتونه؟»\n\nفرهمند: «آره، اما این چه ربطی داره، یعنی جلسه امروز مربوط به رحمانیه؟»\n\nامیری: «خب بگید دیگه، از استرس داریم می‌ترکیم!»\n\nرها نادری: «اون... اون یک خیانتکاره!»\n\n(امیری، موسوی و فرهمند همزمان): «چی؟؟؟»\n\n🗣️ فرمانده: «بله اون یک خیانتکاره.»\n\nموسوی: «مگه چه کاری کرده؟»\n\nرها نادری: «این ویس رو گوش بدید تا همه‌چیز رو متوجه بشید.»', choices:[choice('ادامه...','meeting_voice_801')], effect:'shake' });
+        addNode('meeting_voice_801',{ speaker:'پخش ویس', text:'صدای ویس: «خب آقای رحمانی، آفرین به شما، خیلی خوب گولشون زدید، همینطور ادامه بدید.»\nرحمانی: «اما اگه اونا بفهمن چی؟»\n«نه آقای رحمانی خیالتون راحت اونا رو ترور می‌کنیم.»\nرحمانی: «باشه پس من با هواپیماهای مختلف عملیات‌های سردرگمی بوجود میارم و شمام یادتون نره برای هر دفعه‌ش ۱۰ هزار دلار بهم بدین...»\n\nموسوی: «وای خدای من باورم نمی‌شه، این ویس رو از اون فلش گیر آوردید؟»\n🗣️ فرمانده: «بله.»\nفرهمند: «ای کاش اصلاً نمی‌گفتم که به کمکشون بریم...»\n🗣️ فرمانده: «مهم نیست، فراموشش کن...»', choices:[choice('ادامه...','meeting_quarantine_801')], effect:'dramatic' });
+        addNode('meeting_quarantine_801',{ speaker:'رها نادری', text:'حالا جان همه ما در خطره، بهتره یه مدت توی همین ساختمون قرنطینه باشیم.\n\nامیری: «ممکنه این ویس با هوش مصنوعی درست شده باشه، شماها چقدر زود باورید!»\n\nرها نادری: «من با چند نفر از مهندسان خبره پرامپت صحبت کردیم و این ویس رو بررسی کردیم هیچ شواهدی...»\n\nموسوی: «اما چرا این ویس توی این فلش بوده؟ یعنی کسی بوده که می‌خواسته ما رو از این برنامه شوم مطلع کنه؟»\n\nرها: «آره، شاید.»\n\nفرهمند: «اما کی بوده؟ ممکنه همون کسی باشه که به رها دیشب زنگ زد؟»\n\nموسوی: «ولی ممکنه این یک ویس واقعی نباشه.»\n\nرها نادری: «چرا آقای موسوی، این ویس واقعیه، من به سرورهای یک پیام‌رسان نفوذ کردم و این ویس رو پیدا کردم، همه‌ی این شواهد نشون می‌دن که این ویس واقعیه.»', choices:[choice('ادامه...','raha_call_again_801')], effect:'dramatic' });
+        addNode('raha_call_again_801',{ speaker:'رها نادری', text:'فرهمند: «رها لطفاً دوباره به همون شماره تماس بگیر.»\n\n(رها مجدداً تماس می‌گیرد)\n\n📞 صدای تلفن: «دستگاه مشترک مورد نظر خاموش می‌باشد، لطفاً بعداً تماس بگیرید.»\n\nرها نادری: «اینم که جواب نداد.»\n\n🗣️ فرمانده: «پس اون از عمد یا سیم‌کارت رو سوزانده یا گوشیش رو دور انداخته تا کسی نتونه ردش رو بزنه.»\n\n(پایان جلسه)\n\n{پایان فصل اول}', extraClass:'system-message', choices:[choice('🎮 پایان فصل اول','chapter1_end_801')], effect:'dramatic' });
+        addNode('chapter1_end_801',{ speaker:'سیستم', text:'فصل اول به پایان رسید.\n\nشما در مسیر بررسی فلش پیش رفتید و حقیقت تلخی را کشف کردید.\n\nسرنخ‌های جمع‌آوری شده: '+GameState.clues.length+' سرنخ\nاعتماد رها: '+GameState.trust.raha+'%\nاعتماد امیری: '+GameState.trust.amiri+'%\n\nداستان ادامه خواهد یافت...', extraClass:'system-message', choices:[], effect:'revelation' });
+        addNode('choice_7_2',{ speaker:'سرلشگر امیری', text:'اعتماد امیری نسبت به شما بیشتر می‌شود و اعتماد رها نسبت به شما کمتر می‌شود.\n\n(در مرحله بعد با کد ۸.۰۲ وارد مرحله‌ای دیگر خواهیم شد.)', choices:[choice('ادامه...','raha_secret_802')], effect:'shake' });
+        addNode('raha_secret_802',{ speaker:'رها نادری', text:'رازی که برملا شد!\n\nرها نادری: «سلام دوستان خیلی ممنونم که به جلسه اومدید من یک چیز بسیار مهم را کشف کردم.»\n\n🗣️ فرمانده: «چه چیزی؟»\n\nرها نادری: «این ویس رو گوش بدید، مرکز فرماندهی این رو به دست آورد.»', choices:[choice('ادامه...','voice_play_802')], effect:'dramatic' });
+        addNode('voice_play_802',{ speaker:'پخش ویس', text:'صدای ویس: «خب آقای رحمانی، آفرین به شما، خیلی خوب گولشون زدید، همینطور ادامه بدید.»\nرحمانی: «اما اگه اونا بفهمن چی؟»\n«نه آقای رحمانی خیالتون راحت اونا رو ترور می‌کنیم.»\nرحمانی: «باشه پس من با هواپیماهای مختلف عملیات‌های سردرگمی بوجود میارم و شمام یادتون نره برای هر دفعه‌ش ۱۰ هزار دلار بهم بدین...»\n\nموسوی: «چقدر صدایش شبیه رحمانی بود!»\n\nرها نادری: «چون واقعی هست.»\n\nفرهمند: «ممکنه ساخته شده با هوش مصنوعی و جعلی باشه.»\n\nرها نادری: «نه من با بسیاری از افراد مهندس پرامپت این صدا رو بررسی کردیم و همه شواهد نشون می‌دن این واقعی هست.»\n\n{پایان فصل اول}', extraClass:'system-message', choices:[choice('🎮 پایان فصل اول','chapter1_end_802')], effect:'flash' });
+        addNode('chapter1_end_802',{ speaker:'سیستم', text:'فصل اول به پایان رسید.\n\nشما در مسیر انتظار و دریافت اطلاعات از مرکز فرماندهی قرار گرفتید.\n\nسرنخ‌های جمع‌آوری شده: '+GameState.clues.length+' سرنخ\nاعتماد رها: '+GameState.trust.raha+'%\nاعتماد امیری: '+GameState.trust.amiri+'%\n\nداستان ادامه خواهد یافت...', extraClass:'system-message', choices:[], effect:'revelation' });
+
+        // ===================== HELPER FUNCTIONS =====================
+        function applyTrustEffect(effects){ for(const [person,change] of Object.entries(effects)){ if(GameState.trust[person]!==undefined){ GameState.trust[person]=Math.max(0,Math.min(100,GameState.trust[person]+change)); } } updateUI(); if(GameState.currentSlot) saveToSlot(GameState.currentSlot); }
+        function addClue(clueText){ if(!GameState.clues.includes(clueText)){ GameState.clues.push(clueText); GameState.clueCounter=GameState.clues.length; updateUI(); addLogEntry('📌 '+clueText); if(GameState.currentSlot) saveToSlot(GameState.currentSlot); } }
+        function addLogEntry(text){ GameState.log.push(text); updateLogPanel(); if(GameState.currentSlot) saveToSlot(GameState.currentSlot); }
+        function updateLogPanel(){ const logEntries=document.getElementById('log-entries'); if(logEntries){ logEntries.innerHTML=GameState.log.map(entry=>'<div class="log-entry">'+entry+'</div>').join(''); logEntries.scrollTop=logEntries.scrollHeight; } }
+        function updateUI(){ const clueDisplay=document.getElementById('clue-counter-display'); if(clueDisplay){ const t=Translations[currentLanguage]||Translations.fa; clueDisplay.textContent='🔍 '+t.clues+': '+GameState.clueCounter; } const nameDisplay=document.getElementById('display-player-name'); if(nameDisplay) nameDisplay.textContent=GameState.playerName||'—'; }
+
+        // ===================== TYPEWRITER EFFECT (No Skip) =====================
+        function typewriterEffect(element,text,speed=15,onComplete=null){ GameState.typewriterActive=true; GameState.typewriterDone=false; GameState.fullText=text; GameState.currentTextIndex=0; element.innerHTML=''; if(GameState.typewriterInterval) clearInterval(GameState.typewriterInterval); GameState.typewriterInterval=setInterval(()=>{ if(GameState.currentTextIndex<text.length){ const char=text[GameState.currentTextIndex]; element.innerHTML+=char; GameState.currentTextIndex++; element.scrollIntoView({block:'nearest',behavior:'smooth'}); } else { clearInterval(GameState.typewriterInterval); GameState.typewriterActive=false; GameState.typewriterDone=true; if(onComplete) onComplete(); } },speed); }
+
+        // ===================== GAME FLOW =====================
+        function showNameInput(){ AudioEngine.init(); AudioEngine.resume(); AudioEngine.clickSound(); document.getElementById('title-screen').style.display='none'; document.getElementById('name-input-section').style.display='block'; setTimeout(()=>document.getElementById('player-name-input').focus(),200); }
+        function submitName(){ const nameInput=document.getElementById('player-name-input'); const name=nameInput.value.trim(); if(name.length<2){ nameInput.style.borderColor='#dc2626'; nameInput.placeholder='لطفاً نام معتبر وارد کنید...'; AudioEngine.alertSound(); return; } GameState.playerName=name; AudioEngine.successSound(); document.getElementById('name-input-section').style.display='none'; document.getElementById('game-screen').style.display='block'; document.getElementById('hamburger-btn').style.display='flex'; updateUI(); addLogEntry('🎮 '+name+' وارد مأموریت شد.'); if(GameState.currentSlot) saveToSlot(GameState.currentSlot); loadNode('intro'); }
+        document.getElementById('player-name-input')?.addEventListener('keydown',(e)=>{ if(e.key==='Enter') submitName(); });
+        function loadNode(nodeId){ const node=StoryNodes[nodeId]; if(!node) return; GameState.currentNode=nodeId; AudioEngine.resume(); const speakerText=document.getElementById('speaker-text'); const speakerDot=document.getElementById('speaker-icon-dot'); const dialogueText=document.getElementById('dialogue-text'); const choicesContainer=document.getElementById('choices-container'); const dialoguePanel=document.getElementById('dialogue-panel'); const speakerName=node.speaker||''; const speakerColor=getSpeakerColor(speakerName); speakerText.textContent=speakerName; speakerText.style.color=speakerColor; speakerDot.style.background=speakerColor; speakerDot.style.boxShadow=`0 0 12px ${speakerColor}`; dialoguePanel.className='dialogue-panel scene-transition'+(node.extraClass?' '+node.extraClass:''); addLogEntry('💬 '+speakerName+': '+node.text.substring(0,50)+'...'); choicesContainer.innerHTML=''; if(node.effect) triggerSpecialEffect(node.effect); typewriterEffect(dialogueText,node.text,14,()=>{ if(node.choices&&node.choices.length>0){ node.choices.forEach((ch,index)=>{ const btn=document.createElement('button'); btn.className='choice-btn'; btn.innerHTML='<span class="choice-number">'+(index+1)+'</span>'+ch.text.replace(/^\d+\.\d*\s*/,'').replace(/^\d+\.\s*/,''); btn.addEventListener('click',()=>{ AudioEngine.clickSound(); if(ch.effects){ if(ch.effects.trust_effect) applyTrustEffect(ch.effects.trust_effect); if(ch.effects.path) GameState.storyPath=ch.effects.path; } if(ch.nextNode) loadNode(ch.nextNode); if(GameState.currentSlot) saveToSlot(GameState.currentSlot); }); choicesContainer.appendChild(btn); }); } else { const restartBtn=document.createElement('button'); restartBtn.className='btn btn-primary'; restartBtn.textContent='🔄 '+(Translations[currentLanguage]?.restart||'شروع مجدد'); restartBtn.style.marginTop='10px'; restartBtn.addEventListener('click',()=>{ AudioEngine.clickSound(); restartGame(); }); choicesContainer.appendChild(restartBtn); } }); updateUI(); if(GameState.currentSlot) saveToSlot(GameState.currentSlot); }
+        function toggleMenu(){ const menu=document.getElementById('menu-overlay'); const btn=document.getElementById('hamburger-btn'); menu.classList.toggle('open'); btn.classList.toggle('active'); AudioEngine.clickSound(); }
+        function showGameSection(){ const menu=document.getElementById('menu-overlay'); const btn=document.getElementById('hamburger-btn'); menu.classList.remove('open'); btn.classList.remove('active'); document.getElementById('settings-panel').style.display='none'; document.getElementById('dialogue-panel').style.display='block'; document.getElementById('choices-container').style.display='flex'; document.getElementById('log-panel').style.display='block'; AudioEngine.clickSound(); }
+        function showSettingsSection(){ const menu=document.getElementById('menu-overlay'); const btn=document.getElementById('hamburger-btn'); menu.classList.remove('open'); btn.classList.remove('active'); document.getElementById('settings-panel').style.display='block'; document.getElementById('dialogue-panel').style.display='none'; document.getElementById('choices-container').style.display='none'; document.getElementById('log-panel').style.display='none'; applyTranslations(); AudioEngine.clickSound(); }
+
+        // ===================== INITIALIZATION =====================
+        document.addEventListener('DOMContentLoaded',()=>{ updateSaveSlotsUI(); applyTranslations(); document.body.addEventListener('click',()=>{ AudioEngine.init(); AudioEngine.resume(); },{once:false}); document.addEventListener('keydown',(e)=>{ if(e.key==='Enter'&&GameState.typewriterDone&&GameState.currentNode){ const choices=document.querySelectorAll('.choice-btn'); if(choices.length===1) choices[0].click(); } }); });
+        console.log('🎮 Call of Truth; Air War — Full Light Theme Loaded');
+    </script>
+</body>
+  </html>
