@@ -2,15 +2,6 @@
 
 ---
 
-## 🧑🏻‍💻 Game Story Summary
-The game’s overarching narrative depicts a hypothetical "Third Imposed War" between the **🇮🇷 IR IRAN ✊🏻** and the United States. The story unfolds from the perspective of a high-ranking political-military decision-maker; the choices this official makes alter the course of the conflict, though—mirroring the reality of the battlefield—Iran ultimately emerges victorious.
-
-While the official is a fictional character—bearing a name chosen by the player—the war’s events are designed to be as realistic as possible, featuring actual figures and scenarios; only the protagonist himself is a fictional construct.
-
-The game consists of short video sequences, a narrative storyline, player-driven decisions, and brief incidental events, all managed through a simple menu and settings interface.
-
----
-
 ## 🤝🏻 Developer Team
 <div align="left">
     
@@ -85,6 +76,9 @@ So, the symbols are `*`, `**`, `1`, and `1.1` (note that the numbers are variabl
 
 ### ▪︎ [**Mohamad Amin**](https://GitHub.com/immohamadamin2026-sudo):
 - Developeing HTML Episode
+
+### ▪︎ [**Roham**](https://GitHub.com/RCodeRoham2014):
+- QA Tester
 
 ---
 
