@@ -74,23 +74,10 @@ public:
         }
     }
 
-    void setFillColor(sf::Color color)
-    {
-        shape.setFillColor(color);
-    }
-
-    void setPosition(sf::Vector2f position)
-    {
-        shape.setPosition(position);
-    }
-    void SetOutline(sf::Color color)
-    {
-        shape.setOutlineColor(color);
-    }
-    void SetThikness(float thick)
-    {
-        shape.setOutlineThickness(thick);
-    }
+    void setFillColor(sf::Color color){shape.setFillColor(color);}
+    void setPosition(sf::Vector2f position){shape.setPosition(position);}
+    void SetOutline(sf::Color color){shape.setOutlineColor(color);}
+    void SetThikness(float thick){shape.setOutlineThickness(thick);}
 private:
     void draw(
         sf::RenderTarget& target,
@@ -104,22 +91,36 @@ private:
 using Button = class Button 
 {
     std::unique_ptr<RoundedRectangle> ptr;
+    sf::Vector2f position;
+    sf::Vector2f size;
     public:
-    Button(sf::Vector2f pos,sf::Color col,sf::Color oco,float thi = 1.f,sf::Vector2f siz)
+    Button(sf::Color col,sf::Vector2f siz)
     {
         ptr = std :: make_unique<RoundedRectangle> (siz,20.f);
-        ptr.get()->setPosition(pos);
         ptr.get()->setFillColor(col);
-        ptr.get()->SetOutline(oco);
-        ptr.get()->SetThikness(thi);
+        this->size = siz;
     }
+
+    void setPosition(sf::Vector2f pos) {ptr.get()->setPosition(pos);this->position = pos;}
+    void setOutline(sf::Color col) {ptr.get()->SetOutline(col);}
+    void setColor(sf::Color col) {ptr.get()->setFillColor(col);}
+    void SetThickness(float thi) {ptr.get()->SetThikness(thi);}
+
     bool IsClicked(sf::RenderWindow win)
     {
         std :: optional event = win.pollEvent();
         if (const auto* mouse = event->getIf<sf::Event::MouseButtonPressed>())
         {
             sf::Vector2i pos = mouse->position;
-            if(pos.x)
         }
     }
+    bool IsHovered(sf::RenderWindow win)
+    {
+
+    }
+};
+using TextBox = class tb
+{
+    std::unique_ptr<sf::RectangleShape> shape;
+    
 };
